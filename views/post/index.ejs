@@ -1,0 +1,10 @@
+<% posts.forEach(post => {
+    %>
+      <h1><%= post.title %></h1>
+      <p class="subtitle"><%= post.id %></p>
+      <p><%= post.body %></p>
+      <a class="btn btn-info">Edit</a>
+      <hr/>
+    <%
+  });
+%>
