@@ -32,6 +32,7 @@ module.exports.security = {
     allRoutes: true,
     allowOrigins: '*',
     allowCredentials: false,
+    allowRequestHeaders: 'x-csrf-token',
   },
 
 
@@ -44,6 +45,6 @@ module.exports.security = {
   *                                                                           *
   ****************************************************************************/
 
-  csrf: false
+  csrf: true
 
 };

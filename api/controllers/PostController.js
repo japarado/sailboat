@@ -6,40 +6,39 @@
  */
 
 module.exports = {
-  index: (req, res) =>
+  find:  async (req, res) =>
   {
-    Post.find({}).sort('updatedAt DESC').exec((err, posts) =>
-    {
-      if(err)
-      {
-        res.send(500, { error: 'Database Error' });
-      }
-      else
-      {
-        //res.view('post/index', { posts: posts });
-        return res.send(200, { posts: posts });
-      }
-    });
+    let posts = await Post.find();
+
+    res.status(200).send(posts);
   },
 
-  store: async (req, res) =>
+  create: async (req, res) =>
   {
-    const newPost = {
-      title: req.body.title,
-      body: req.body.body,
+    const title = req.body.title;
+    const body = req.body.body;
+
+    const queryObject = {
+      title: title,
+      body: body,
     };
-    const post = await Post.create(newPost).fetch();
 
-    res.send(200, { post: post });
+    const newPost = await Post.create(queryObject).fetch();
+
+    res.status(200).send(newPost);
   },
 
-  destroy: async (req,res) =>
+  destroy: async (req, res) =>
   {
     const id = req.param('id');
 
-    const deletedPost = await Post.destroy({ id: id }).fetch();
+    const queryObject = {
+      id: id,
+    };
 
-    res.send(202, { deletedPost: deletedPost });
+    const postObject = await Post.destroy(queryObject).fetch();
+
+    res.status(204).send(postObject);
   }
 };
 

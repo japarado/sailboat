@@ -18,7 +18,10 @@ module.exports.policies = {
   'view-homepage-or-redirect': true,
   'deliver-contact-form-message': true,
 
+  'security/grant-csrf-token': true,
+
   PostController: {
-    '*': true
+    '*': true,
   }
+
 };

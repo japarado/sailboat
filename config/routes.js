@@ -33,11 +33,10 @@ module.exports.routes = {
   'GET /account/password':   { action: 'account/view-edit-password' },
   'GET /account/profile':    { action: 'account/view-edit-profile' },
 
+  'GET /csrfToken' : { action: 'security/grant-csrf-token' },
+
   'GET /post': 'PostController.index',
-  'GET /post/:id': 'PostController.show',
-  'POST /post': 'PostController.store',
-  'PUT /post/:id': 'PostController.update',
-  'DELETE /post/:id': 'PostController.destroy',
+  'POST /post': 'PostController.create',
 
   //  ╔╦╗╦╔═╗╔═╗  ╦═╗╔═╗╔╦╗╦╦═╗╔═╗╔═╗╔╦╗╔═╗   ┬   ╔╦╗╔═╗╦ ╦╔╗╔╦  ╔═╗╔═╗╔╦╗╔═╗
   //  ║║║║╚═╗║    ╠╦╝║╣  ║║║╠╦╝║╣ ║   ║ ╚═╗  ┌┼─   ║║║ ║║║║║║║║  ║ ║╠═╣ ║║╚═╗
@@ -67,7 +66,6 @@ module.exports.routes = {
   'POST  /api/v1/entrance/update-password-and-login':    { action: 'entrance/update-password-and-login' },
   'POST  /api/v1/deliver-contact-form-message':          { action: 'deliver-contact-form-message' },
 
-  'GET /api/v1/post': 'PostController.index',
-  'DELETE /api/v1/post/:id': 'PostController.destroy',
-  'POST /api/v1/post': 'PostController.store',
+  'GET /post': 'PostController.find',
+  'POST /post': 'PostController.create',
 };
