@@ -35,8 +35,8 @@ module.exports.routes = {
 
   'GET /csrfToken' : { action: 'security/grant-csrf-token' },
 
-  'GET /post': 'PostController.index',
-  'POST /post': 'PostController.create',
+  /*'GET /post': 'PostController.index',
+  'POST /post': 'PostController.create',*/
 
   //  ╔╦╗╦╔═╗╔═╗  ╦═╗╔═╗╔╦╗╦╦═╗╔═╗╔═╗╔╦╗╔═╗   ┬   ╔╦╗╔═╗╦ ╦╔╗╔╦  ╔═╗╔═╗╔╦╗╔═╗
   //  ║║║║╚═╗║    ╠╦╝║╣  ║║║╠╦╝║╣ ║   ║ ╚═╗  ┌┼─   ║║║ ║║║║║║║║  ║ ║╠═╣ ║║╚═╗
@@ -68,4 +68,5 @@ module.exports.routes = {
 
   'GET /post': 'PostController.find',
   'POST /post': 'PostController.create',
+  'DELETE /post/:id': 'PostController.destroy',
 };

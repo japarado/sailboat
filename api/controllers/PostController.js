@@ -8,7 +8,7 @@
 module.exports = {
   find:  async (req, res) =>
   {
-    let posts = await Post.find();
+    let posts = await Post.find().sort('createdAt DESC');
 
     res.status(200).send(posts);
   },
@@ -25,7 +25,6 @@ module.exports = {
 
     const newPost = await Post.create(queryObject).fetch();
 
-    res.status(200).send(newPost);
   },
 
   destroy: async (req, res) =>
