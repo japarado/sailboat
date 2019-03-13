@@ -15,7 +15,7 @@ module.exports = {
 
     sails.sockets.join(req, 'postSocket');
 
-    sails.sockets.broadcast('postSocket', 'find', { msg: "Model: Post \nAction: Find" }, req);
+    sails.sockets.broadcast('postSocket', 'post', { msg: 'FIND' }, req);
 
     const posts = await Post.find().sort('createdAt DESC');
 
@@ -30,14 +30,11 @@ module.exports = {
     };
 
     sails.sockets.join(req, 'postSocket');
-    sails.sockets.broadcast('postSocket', 'create', { msg: "Model: Post \nAction: Create" })
+    sails.sockets.broadcast('postSocket', 'post', { msg: 'CREATE'});
 
     const newPost = await Post.create(queryObject).fetch();
 
-    return res.json({
-      newPost
-    })
-
+    res.send(201).send(newPost);
   },
 
   destroy: async (req, res) =>
@@ -49,11 +46,11 @@ module.exports = {
     };
 
     sails.sockets.join(req, 'postSocket');
-    sails.sockets.broadcast('postSocket', 'destroy', { msg: "Model: Post \nAction: Create" })
+    sails.sockets.broadcast('postSocket', 'post', { msg: 'DESTROY' });
 
     const postObject = await Post.destroy(queryObject).fetch();
 
-    res.status(200).send(postObject);
+    res.status(204).send(postObject);
   }
 };
 
