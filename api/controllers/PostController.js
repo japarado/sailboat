@@ -8,22 +8,35 @@
 module.exports = {
   find:  async (req, res) =>
   {
-    let posts = await Post.find().sort('createdAt DESC');
+    if(!req.isSocket)
+    {
+      return res.badRequest();
+    }
+
+    sails.sockets.join(req, 'postSocket');
+
+    sails.sockets.broadcast('postSocket', 'find', { msg: "Model: Post \nAction: Find" }, req);
+
+    const posts = await Post.find().sort('createdAt DESC');
 
     res.status(200).send(posts);
   },
 
   create: async (req, res) =>
   {
-    const title = req.body.title;
-    const body = req.body.body;
-
     const queryObject = {
-      title: title,
-      body: body,
+      title: req.body.title,
+      body: req.body.body,
     };
 
+    sails.sockets.join(req, 'postSocket');
+    sails.sockets.broadcast('postSocket', 'create', { msg: "Model: Post \nAction: Create" })
+
     const newPost = await Post.create(queryObject).fetch();
+
+    return res.json({
+      newPost
+    })
 
   },
 
@@ -35,9 +48,12 @@ module.exports = {
       id: id,
     };
 
+    sails.sockets.join(req, 'postSocket');
+    sails.sockets.broadcast('postSocket', 'destroy', { msg: "Model: Post \nAction: Create" })
+
     const postObject = await Post.destroy(queryObject).fetch();
 
-    res.status(204).send(postObject);
+    res.status(200).send(postObject);
   }
 };
 
