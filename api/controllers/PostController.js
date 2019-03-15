@@ -6,20 +6,21 @@
  */
 
 module.exports = {
-  find:  async (req, res) =>
+  /*find:  async (req, res) =>
   {
     if(!req.isSocket)
     {
-      return res.badRequest();
+      return res.badRequest('Only socket requests may access this route. Received an HTTP route.');
+
     }
 
-    sails.sockets.join(req, 'postSocket');
+    const posts = await Post.find().sort([ { createdAt: 'DESC' } ]);
+    Post.subscribe(req, _.pluck(posts, 'id'));
+    Post.publish(_.pluck(posts, 'id'), {
+      verb: 'find',
+      posts: posts,
+    });
 
-    sails.sockets.broadcast('postSocket', 'post', { msg: 'FIND' }, req);
-
-    const posts = await Post.find().sort('createdAt DESC');
-
-    res.status(200).send(posts);
   },
 
   create: async (req, res) =>
@@ -29,28 +30,29 @@ module.exports = {
       body: req.body.body,
     };
 
-    sails.sockets.join(req, 'postSocket');
-    sails.sockets.broadcast('postSocket', 'post', { msg: 'CREATE'});
+    const post = await Post.create(queryObject).fetch();
 
-    const newPost = await Post.create(queryObject).fetch();
-
-    res.send(201).send(newPost);
+    Post.subscribe(req, [post.id]);
+    Post.publish([post.id], {
+      verb: 'create',
+      post: post,
+    });
   },
 
   destroy: async (req, res) =>
   {
     const id = req.param('id');
-
     const queryObject = {
       id: id,
     };
 
-    sails.sockets.join(req, 'postSocket');
-    sails.sockets.broadcast('postSocket', 'post', { msg: 'DESTROY' });
+    const post = await Post.destroy(queryObject).fetch();
 
-    const postObject = await Post.destroy(queryObject).fetch();
-
-    res.status(204).send(postObject);
-  }
+    Post.subscribe(req, _.pluck(post, 'id'));
+    Post.publish(_.pluck(post, 'id'), {
+      verb: 'destroy',
+      post: post,
+    }, req);
+  }*/
 };
 
